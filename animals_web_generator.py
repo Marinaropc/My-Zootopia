@@ -27,16 +27,22 @@ def organize_data(animals_data):
         except KeyError:
             animal_type = "Unknown"
         if animal_type == "Unknown":
-            animal_cards += f"""<li class="cards__item">
-                        Name: {animal_name}<br/>\n
-                        Diet: {animal_diet}<br/>\n
-                        Location: {animal_location}<br/>\n"""
+            animal_cards += f"""<li class="cards__item">\n
+                        <div class="card__title">{animal_name}</div>\n
+                        <p class="card__text">\n
+                        <strong>Diet:</strong> {animal_diet}<br/>\n
+                        <strong>Location:</strong> {animal_location}<br/>\n
+                        </p>\n
+                        </li>\n"""
         else:
-            animal_cards += f"""<li class="cards__item">
-                        Name: {animal_name}<br/>\n
-                        Diet: {animal_diet}<br/>\n
-                        Location: {animal_location}<br/>\n
-                        Type: {animal_type}<br/>\n"""
+            animal_cards += f"""<li class="cards__item">\n
+                        <div class="card__title">{animal_name}</div>\n
+                        <p class="card__text">\n
+                        <strong>Diet:</strong> {animal_diet}<br/>\n
+                        <strong>Location:</strong> {animal_location}<br/>\n
+                        <strong>Type:</strong> {animal_type}<br/>\n
+                        </p>\n
+                        </li>\n"""
     return animal_cards
 
 def rewrite_html(animals_info, template, output_file):
