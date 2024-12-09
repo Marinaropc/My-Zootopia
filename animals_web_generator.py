@@ -2,15 +2,30 @@ import json
 
 
 def load_data(file_path):
-    """ Loads a JSON file """
+    """
+    Load a JSON file.
+
+    Args:
+        file_path (str): Path to the JSON file.
+
+    Returns:
+        dict: Parsed JSON data.
+    """
     with open(file_path, "r") as handle:
         return json.load(handle)
 
 
 def organize_data(animals_data):
-    """ Iterates through the animals_data and returns all 
-    animal cards in an html friendly format """
+    """
+    Iterate through the animals_data and return all 
+    animal cards in an HTML-friendly format.
 
+    Args:
+        animals_data (list): List of animal dictionaries.
+
+    Returns:
+        str: HTML string containing animal cards.
+    """
     animal_cards= ''
     for animal_dict in animals_data:
         try:
@@ -48,13 +63,22 @@ def organize_data(animals_data):
                         </li>\n"""
     return animal_cards
 
+
 def rewrite_html(animals_info, template, output_file):
-    """ Reads and creates a new file with the updated animal data """
+    """
+    Read a template and create a new file with updated animal data.
+
+    Args:
+        animals_info (str): HTML-formatted animal cards.
+        template (str): Path to the template file.
+        output_file (str): Path to the output HTML file.
+    """
 
     with open(template, "r") as fileobj:
         template = fileobj.read()
 
-    new_html = template.replace("__REPLACE_ANIMALS_INFO__", animals_info)
+    new_html = template.replace("__REPLACE_ANIMALS_INFO__", 
+                                animals_info)
 
     with open(output_file, "w") as fileobj:
         fileobj.write(new_html)
@@ -65,7 +89,8 @@ def main():
 
     animals_info = load_data("animals_data.json")
     animals_string = organize_data(animals_info)
-    rewrite_html(animals_string,"animals_template.html", "animals.html")
+    rewrite_html(animals_string,"animals_template.html",
+                "animals.html")
 
 
 if __name__ == "__main__":
