@@ -8,6 +8,9 @@ def load_data(file_path):
 
 
 def organize_data(animals_data):
+    """ Iterates through the animals_data and returns all 
+    animal cards in an html friendly format """
+
     animal_cards= ''
     for animal_dict in animals_data:
         try:
@@ -46,6 +49,8 @@ def organize_data(animals_data):
     return animal_cards
 
 def rewrite_html(animals_info, template, output_file):
+    """ Reads and creates a new file with the updated animal data """
+
     with open(template, "r") as fileobj:
         template = fileobj.read()
 
@@ -56,10 +61,11 @@ def rewrite_html(animals_info, template, output_file):
 
 
 def main():
+    """ Takes care of executing all functions """
+
     animals_info = load_data("animals_data.json")
     animals_string = organize_data(animals_info)
     rewrite_html(animals_string,"animals_template.html", "animals.html")
-    
 
 
 if __name__ == "__main__":
