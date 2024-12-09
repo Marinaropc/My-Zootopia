@@ -8,7 +8,7 @@ def load_data(file_path):
 
 
 def organize_data(animals_data):
-    output= ''
+    animal_cards= ''
     for animal_dict in animals_data:
         try:
             animal_name = animal_dict["name"]
@@ -27,12 +27,17 @@ def organize_data(animals_data):
         except KeyError:
             animal_type = "Unknown"
         if animal_type == "Unknown":
-            output += (f"Name: {animal_name}\nDiet: {animal_diet}"
-               f"\nLocation: {animal_location}\n")
+            animal_cards += f"""<li class="cards__item">
+                        Name: {animal_name}<br/>\n
+                        Diet: {animal_diet}<br/>\n
+                        Location: {animal_location}<br/>\n"""
         else:
-            output += (f"Name: {animal_name}\nDiet: {animal_diet}"
-                f"\nLocation: {animal_location}\nType: {animal_type}\n")
-    return output
+            animal_cards += f"""<li class="cards__item">
+                        Name: {animal_name}<br/>\n
+                        Diet: {animal_diet}<br/>\n
+                        Location: {animal_location}<br/>\n
+                        Type: {animal_type}<br/>\n"""
+    return animal_cards
 
 def rewrite_html(animals_info, template, output_file):
     with open(template, "r") as fileobj:
@@ -48,7 +53,7 @@ def main():
     animals_info = load_data("animals_data.json")
     animals_string = organize_data(animals_info)
     rewrite_html(animals_string,"animals_template.html", "animals.html")
-    print (animals_string)
+    
 
 
 if __name__ == "__main__":
