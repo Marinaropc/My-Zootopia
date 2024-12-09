@@ -1,14 +1,14 @@
 import json
 
+
 def load_data(file_path):
     """ Loads a JSON file """
     with open(file_path, "r") as handle:
         return json.load(handle)
-    
-animals_info = load_data("animals_data.json")
 
 
-def print_data(animals_data):
+def organize_data(animals_data):
+    output= ''
     for animal_dict in animals_data:
         try:
             animal_name = animal_dict["name"]
@@ -27,10 +27,29 @@ def print_data(animals_data):
         except KeyError:
             animal_type = "Unknown"
         if animal_type == "Unknown":
-            print (f"Name: {animal_name}\nDiet: {animal_diet}"
+            output += (f"Name: {animal_name}\nDiet: {animal_diet}"
                f"\nLocation: {animal_location}\n")
         else:
-            print (f"Name: {animal_name}\nDiet: {animal_diet}"
+            output += (f"Name: {animal_name}\nDiet: {animal_diet}"
                 f"\nLocation: {animal_location}\nType: {animal_type}\n")
+    return output
 
-print_data(animals_info)
+def rewrite_html(animals_info, template, output_file):
+    with open(template, "r") as fileobj:
+        template = fileobj.read()
+
+    new_html = template.replace("__REPLACE_ANIMALS_INFO__", animals_info)
+
+    with open(output_file, "w") as fileobj:
+        fileobj.write(new_html)
+
+
+def main():
+    animals_info = load_data("animals_data.json")
+    animals_string = organize_data(animals_info)
+    rewrite_html(animals_string,"animals_template.html", "animals.html")
+    print (animals_string)
+
+
+if __name__ == "__main__":
+    main()
