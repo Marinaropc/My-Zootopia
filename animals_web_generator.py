@@ -88,6 +88,7 @@ def main():
     api_data = fetch_data(params)
     if api_data and len(api_data)>0:
         animals_string = organize_data(api_data)
+        print ("html created successfully")
     else:
         animals_string = ""
     rewrite_html(animals_string,
