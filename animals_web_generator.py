@@ -1,18 +1,10 @@
-import json
+from data_fetcher import fetch_data
 
 
-def load_data(file_path):
-    """
-    Load a JSON file.
-
-    Args:
-        file_path (str): Path to the JSON file.
-
-    Returns:
-        dict: Parsed JSON data.
-    """
-    with open(file_path, "r") as handle:
-        return json.load(handle)
+def user_input():
+    user_choice = input("Type an animal: ")
+    params = {"name": user_choice}
+    return params
 
 
 def organize_data(animals_data):
@@ -75,22 +67,32 @@ def rewrite_html(animals_info, template, output_file):
     """
 
     with open(template, "r") as fileobj:
-        template = fileobj.read()
+        template_content = fileobj.read()
 
-    new_html = template.replace("__REPLACE_ANIMALS_INFO__", 
-                                animals_info)
+    if not animals_info.strip():
+        animals_info = """
+        <li class="cards__item">
+            <div class="card__title">Animal Not Found</div>
+            <p class="card__text">The animal you searched for is not available in the database.</p>
+        </li>
+        """
+
+    new_html = template_content.replace("__REPLACE_ANIMALS_INFO__", animals_info)
 
     with open(output_file, "w") as fileobj:
         fileobj.write(new_html)
 
-
 def main():
     """ Takes care of executing all functions """
-
-    animals_info = load_data("animals_data.json")
-    animals_string = organize_data(animals_info)
-    rewrite_html(animals_string,"animals_template.html",
-                "animals.html")
+    params = user_input()
+    api_data = fetch_data(params)
+    if api_data and len(api_data)>0:
+        animals_string = organize_data(api_data)
+    else:
+        animals_string = ""
+    rewrite_html(animals_string,
+                 "animals_template.html",
+            "animals.html")
 
 
 if __name__ == "__main__":
